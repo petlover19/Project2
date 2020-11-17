@@ -45,10 +45,10 @@ const DomoList=function(props){
     };
 
 
-    const domoNodes=prosp.domos.map(function(domo){
+    const domoNodes=props.domos.map(function(domo){
         return(
             <div key={domo._id} className="domo">
-                <img src="hosted/img/domoface.jpg" alt="domo face" className="domoface" />
+                <img src="hosted/img/domoface.jpeg" alt="domo face" className="domoface" />
                 <h3 className="domoName">Name: {domo.name} </h3>
                 <h3 className="domoAgee">Age: {domo.age} </h3>
             </div>
@@ -62,16 +62,16 @@ const DomoList=function(props){
     );
 };
 
-const loadDomosFormServer=()=>{
+const loadDomosFromServer=()=>{
     sendAjax('GET','/getDomos',null,(data)=>{
-        ReactDom.render(
+        ReactDOM.render(
             <DomoList domos={data.domos} />,document.querySelector("#domos")
         );
     });
 };
 
 const setup=function(csrf){
-    ReactDom.render(
+    ReactDOM.render(
         <DomoForm csrf={csrf} />,document.querySelector("#makeDomo")
     );
     ReactDOM.render(
@@ -81,8 +81,12 @@ const setup=function(csrf){
     loadDomosFromServer();
 };
 
-const getToken=()=>{
+const getToken = ()=>{
     sendAjax('GET','/getToken',null,(result)=>{
         setup(result.csrfToken);
     });
+    
 };
+$(document).ready(function(){
+    getToken();
+});

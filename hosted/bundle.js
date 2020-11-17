@@ -60,12 +60,12 @@ var DomoList = function DomoList(props) {
   }
 
   ;
-  var domoNodes = prosp.domos.map(function (domo) {
+  var domoNodes = props.domos.map(function (domo) {
     return /*#__PURE__*/React.createElement("div", {
       key: domo._id,
       className: "domo"
     }, /*#__PURE__*/React.createElement("img", {
-      src: "hosted/img/domoface.jpg",
+      src: "hosted/img/domoface.jpeg",
       alt: "domo face",
       className: "domoface"
     }), /*#__PURE__*/React.createElement("h3", {
@@ -79,16 +79,16 @@ var DomoList = function DomoList(props) {
   }, domoNodes);
 };
 
-var loadDomosFormServer = function loadDomosFormServer() {
+var loadDomosFromServer = function loadDomosFromServer() {
   sendAjax('GET', '/getDomos', null, function (data) {
-    ReactDom.render( /*#__PURE__*/React.createElement(DomoList, {
+    ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
       domos: data.domos
     }), document.querySelector("#domos"));
   });
 };
 
 var setup = function setup(csrf) {
-  ReactDom.render( /*#__PURE__*/React.createElement(DomoForm, {
+  ReactDOM.render( /*#__PURE__*/React.createElement(DomoForm, {
     csrf: csrf
   }), document.querySelector("#makeDomo"));
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
@@ -102,6 +102,10 @@ var getToken = function getToken() {
     setup(result.csrfToken);
   });
 };
+
+$(document).ready(function () {
+  getToken();
+});
 "use strict";
 
 var handleError = function handleError(message) {
