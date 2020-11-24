@@ -1,92 +1,83 @@
-const handleDomo = (e) => {
+const handleRecipe = (e) => {
     e.preventDefault();
 
-    $("#domoMessage").animate({
+    $("#chefMessage").animate({
         width: 'hide'
     }, 350);
 
-    if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
-        handleError("RAWR! All fields are required");
+    if ($("#nameField").val() == '' || $("#ingredientsField").val() == ''|| $("#directionsField").val() == '') {
+        handleError("All fields are required");
         return false;
     }
 
-    sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function() {
-        loadDomosFromServer();
+    sendAjax('POST', $("#recipeForm").attr("action"), $("#recipeForm").serialize(), function() {
+        loadRecipesFromServer();
     });
     return false;
 };
 
-const DomoForm = (props) => {
-    return ( 
-    <form id="domoForm" 
-        name="domoForm" 
-        onSubmit={handleDomo} 
+const RecipeForm = (props) => {
+    return ( <form id="recipeForm" 
+        name="recipeForm"
+        onSubmit={handleRecipe} 
         action="/maker" 
-        method="POST" 
-        className="domoForm"
-    >
-        <label htmlFor="name">Name: </label>
-        <input id="domoName" type="text" name="name" placeholder="Domo Name"/> 
-        <label htmlFor="pass">Age: </label>
-        <input id="domoAge" type="number" name="age" placeholder="0"/>
-        <input type="hidden" name="_csrf" value={props.csrf}/>
-        <input className="makeDomoSubmit" type="submit" value="Make Domo"/>      
-    </form >
+        method="POST">
+    <label htmlFor="nameField">Name: </label>
+    <input id="nameField" type="text" name="name" />
+    <label htmlFor="ingredientsField">Ingredients: </label>
+    <textarea id="ingredientsField" type="text" name="ingredients" rows="5"></textarea>
+    <label htmlFor="directionsField">Directions: </label>
+    <textarea id="directionsField" type="text" name="directions" rows="5"></textarea>
+    {/* <br> */}
+    <input type="hidden" name="_csrf" value={props.csrf}/>
+    <input type="submit" value=" Make Card" id="submit"/>
+    
+    </form>
     );
 };
 
-const DomoList=function(props){
-    if(props.domos.length===0){
-        return(
-            <div className="domoList">
-                <h3 className="emptyDomo">No Domos yet</h3>
+const RecipeList = function(props) {
+    if (props.recipes.length === 0) {
+        return ( <div className = "recipeList" >
+                <h3 className = "emptyRecipe" > No Recipes yet </h3> 
             </div>
         );
     };
 
 
-    const domoNodes=props.domos.map(function(domo){
-        return(
-            <div key={domo._id} className="domo">
-                <img src="hosted/img/domoface.jpeg" alt="domo face" className="domoface" />
-                <h3 className="domoName">Name: {domo.name} </h3>
-                <h3 className="domoAgee">Age: {domo.age} </h3>
+    const recipeNodes = props.recipes.map(function(recipe) {
+        return ( <div key = { recipe._id }
+                className = "recipeCards" >
+                    <h3 className = "nameField" > Name: { recipe.name } </h3> 
+                    <h3 className = "ingredientsField" > Ingredients: { recipe.ingredients } </h3> 
+                    <h3 className = "directionsField" > Directions: { recipe.directions } </h3> 
             </div>
         );
     });
 
-    return(
-        <div className="domoList">
-            {domoNodes}
-        </div>
+    return ( <div className = "recipeList" > { recipeNodes } </div>
     );
 };
 
-const loadDomosFromServer=()=>{
-    sendAjax('GET','/getDomos',null,(data)=>{
-        ReactDOM.render(
-            <DomoList domos={data.domos} />,document.querySelector("#domos")
-        );
+const loadRecipesFromServer = () => {
+    sendAjax('GET', '/getRecipes', null, (data) => {
+        ReactDOM.render( <RecipeList recipes = { data.recipes }/>,document.querySelector("#recipes"));
     });
 };
 
-const setup=function(csrf){
-    ReactDOM.render(
-        <DomoForm csrf={csrf} />,document.querySelector("#makeDomo")
-    );
-    ReactDOM.render(
-        <DomoList domos={[]} />,document.querySelector("#domos")
-    );
+const setup = function(csrf) {
+    ReactDOM.render( <RecipeForm csrf = { csrf }/>,document.querySelector("#makeRecipe"));
+    ReactDOM.render( <RecipeList recipes = { [] }/>,document.querySelector("#recipes"));
 
-    loadDomosFromServer();
+    loadRecipesFromServer();
 };
 
-const getToken = ()=>{
-    sendAjax('GET','/getToken',null,(result)=>{
+const getToken = () => {
+    sendAjax('GET', '/getToken', null, (result) => {
         setup(result.csrfToken);
     });
-    
+
 };
-$(document).ready(function(){
+$(document).ready(function() {
     getToken();
 });

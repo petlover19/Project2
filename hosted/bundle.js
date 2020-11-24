@@ -1,100 +1,103 @@
 "use strict";
 
-var handleDomo = function handleDomo(e) {
+var handleRecipe = function handleRecipe(e) {
   e.preventDefault();
-  $("#domoMessage").animate({
+  $("#chefMessage").animate({
     width: 'hide'
   }, 350);
 
-  if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
-    handleError("RAWR! All fields are required");
+  if ($("#nameField").val() == '' || $("#ingredientsField").val() == '' || $("#directionsField").val() == '') {
+    handleError("All fields are required");
     return false;
   }
 
-  sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function () {
-    loadDomosFromServer();
+  sendAjax('POST', $("#recipeForm").attr("action"), $("#recipeForm").serialize(), function () {
+    loadRecipesFromServer();
   });
   return false;
 };
 
-var DomoForm = function DomoForm(props) {
+var RecipeForm = function RecipeForm(props) {
   return /*#__PURE__*/React.createElement("form", {
-    id: "domoForm",
-    name: "domoForm",
-    onSubmit: handleDomo,
+    id: "recipeForm",
+    name: "recipeForm",
+    onSubmit: handleRecipe,
     action: "/maker",
-    method: "POST",
-    className: "domoForm"
+    method: "POST"
   }, /*#__PURE__*/React.createElement("label", {
-    htmlFor: "name"
+    htmlFor: "nameField"
   }, "Name: "), /*#__PURE__*/React.createElement("input", {
-    id: "domoName",
+    id: "nameField",
     type: "text",
-    name: "name",
-    placeholder: "Domo Name"
+    name: "name"
   }), /*#__PURE__*/React.createElement("label", {
-    htmlFor: "pass"
-  }, "Age: "), /*#__PURE__*/React.createElement("input", {
-    id: "domoAge",
-    type: "number",
-    name: "age",
-    placeholder: "0"
+    htmlFor: "ingredientsField"
+  }, "Ingredients: "), /*#__PURE__*/React.createElement("textarea", {
+    id: "ingredientsField",
+    type: "text",
+    name: "ingredients",
+    rows: "5"
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "directionsField"
+  }, "Directions: "), /*#__PURE__*/React.createElement("textarea", {
+    id: "directionsField",
+    type: "text",
+    name: "directions",
+    rows: "5"
   }), /*#__PURE__*/React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
   }), /*#__PURE__*/React.createElement("input", {
-    className: "makeDomoSubmit",
     type: "submit",
-    value: "Make Domo"
+    value: " Make Card",
+    id: "submit"
   }));
 };
 
-var DomoList = function DomoList(props) {
-  if (props.domos.length === 0) {
+var RecipeList = function RecipeList(props) {
+  if (props.recipes.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
-      className: "domoList"
+      className: "recipeList"
     }, /*#__PURE__*/React.createElement("h3", {
-      className: "emptyDomo"
-    }, "No Domos yet"));
+      className: "emptyRecipe"
+    }, " No Recipes yet "));
   }
 
   ;
-  var domoNodes = props.domos.map(function (domo) {
+  var recipeNodes = props.recipes.map(function (recipe) {
     return /*#__PURE__*/React.createElement("div", {
-      key: domo._id,
-      className: "domo"
-    }, /*#__PURE__*/React.createElement("img", {
-      src: "hosted/img/domoface.jpeg",
-      alt: "domo face",
-      className: "domoface"
-    }), /*#__PURE__*/React.createElement("h3", {
-      className: "domoName"
-    }, "Name: ", domo.name, " "), /*#__PURE__*/React.createElement("h3", {
-      className: "domoAgee"
-    }, "Age: ", domo.age, " "));
+      key: recipe._id,
+      className: "recipeCards"
+    }, /*#__PURE__*/React.createElement("h3", {
+      className: "nameField"
+    }, " Name: ", recipe.name, " "), /*#__PURE__*/React.createElement("h3", {
+      className: "ingredientsField"
+    }, " Ingredients: ", recipe.ingredients, " "), /*#__PURE__*/React.createElement("h3", {
+      className: "directionsField"
+    }, " Directions: ", recipe.directions, " "));
   });
   return /*#__PURE__*/React.createElement("div", {
-    className: "domoList"
-  }, domoNodes);
+    className: "recipeList"
+  }, " ", recipeNodes, " ");
 };
 
-var loadDomosFromServer = function loadDomosFromServer() {
-  sendAjax('GET', '/getDomos', null, function (data) {
-    ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
-      domos: data.domos
-    }), document.querySelector("#domos"));
+var loadRecipesFromServer = function loadRecipesFromServer() {
+  sendAjax('GET', '/getRecipes', null, function (data) {
+    ReactDOM.render( /*#__PURE__*/React.createElement(RecipeList, {
+      recipes: data.recipes
+    }), document.querySelector("#recipes"));
   });
 };
 
 var setup = function setup(csrf) {
-  ReactDOM.render( /*#__PURE__*/React.createElement(DomoForm, {
+  ReactDOM.render( /*#__PURE__*/React.createElement(RecipeForm, {
     csrf: csrf
-  }), document.querySelector("#makeDomo"));
-  ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
-    domos: []
-  }), document.querySelector("#domos"));
-  loadDomosFromServer();
+  }), document.querySelector("#makeRecipe"));
+  ReactDOM.render( /*#__PURE__*/React.createElement(RecipeList, {
+    recipes: []
+  }), document.querySelector("#recipes"));
+  loadRecipesFromServer();
 };
 
 var getToken = function getToken() {
@@ -110,13 +113,13 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
   $("#errorMessage").text(message);
-  $("#domoMessage").animate({
+  $("#chefMessage").animate({
     width: 'toggle'
   }, 350);
 };
 
 var redirect = function redirect(response) {
-  $("#domoMessage").animate({
+  $("#chefMessage").animate({
     width: 'hide'
   }, 350);
   window.location = response.redirect;

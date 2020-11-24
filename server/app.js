@@ -14,7 +14,7 @@ const redis = require('redis');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb+srv://WebDevII:Smalus18@cluster0.cfff2.mongodb.net/doma';
+const dbURL = process.env.MONGODB_URI || 'mongodb+srv://WebDevII:Smalus18@cluster0.cfff2.mongodb.net/recipeBook';
 
 const mongooseOptions = {
     useNewUrlParser: true,
@@ -49,7 +49,7 @@ const router = require('./router.js');
 
 const app = express();
 app.use('/hosted', express.static(path.resolve(`${__dirname}/../hosted/`)));
-app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
+app.use(favicon(`${__dirname}/../hosted/img/spork-logo.png`));
 app.use(compression());
 app.use(bodyParser.urlencoded({
     extended: true,
@@ -59,7 +59,7 @@ app.use(session({
     store: new RedisStore({
         client: redisClient,
     }),
-    secret: 'Domo Arigato',
+    secret: 'Food is the path to the heart',
     resave: true,
     saveUninitialized: true,
     cookie: {
