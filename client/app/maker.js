@@ -43,14 +43,36 @@ const RecipeList = function(props) {
             </div>
         );
     };
+    
+    const ingList = props.recipes.ingredients.map((ing)=>{
+        console.log("ing",ing)
+        return(
+            <li>{ing}</li>
+        ); 
+    });
 
+    const dirList = props.recipes.map((recipe)=>{
+        for(let dir in recipe){
+            return(
+                <li>{dir}</li>
+            );
+        }
+        console.log("dir",dir)
+    });
 
-    const recipeNodes = props.recipes.map(function(recipe) {
-        return ( <div key = { recipe._id }
-                className = "recipeCards" >
-                    <h3 className = "nameField" > Name: { recipe.name } </h3> 
-                    <h3 className = "ingredientsField" > Ingredients: { recipe.ingredients } </h3> 
-                    <h3 className = "directionsField" > Directions: { recipe.directions } </h3> 
+    const recipeNodes = props.recipes.map((recipe) =>{
+        console.log(props.recipes.ingredients)
+        console.log(recipe)
+        return ( <div key = { recipe._id } className = "cards" >
+                    <h2 className = "nameField" > Name: { recipe.name } </h2> 
+                    <h3 className = "ingredientsField" > Ingredients:</h3> 
+                    <ul>
+                        {ingList}
+                    </ul>
+                    <h3 className = "directionsField" > Directions:</h3> 
+                    <ol>
+                        {dirList}
+                    </ol>
             </div>
         );
     });

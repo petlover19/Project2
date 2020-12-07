@@ -65,17 +65,30 @@ var RecipeList = function RecipeList(props) {
   }
 
   ;
+  var ingList = props.recipes.ingredients.map(function (ing) {
+    console.log("ing", ing);
+    return /*#__PURE__*/React.createElement("li", null, ing);
+  });
+  var dirList = props.recipes.map(function (recipe) {
+    for (var _dir in recipe) {
+      return /*#__PURE__*/React.createElement("li", null, _dir);
+    }
+
+    console.log("dir", dir);
+  });
   var recipeNodes = props.recipes.map(function (recipe) {
+    console.log(props.recipes.ingredients);
+    console.log(recipe);
     return /*#__PURE__*/React.createElement("div", {
       key: recipe._id,
-      className: "recipeCards"
-    }, /*#__PURE__*/React.createElement("h3", {
+      className: "cards"
+    }, /*#__PURE__*/React.createElement("h2", {
       className: "nameField"
     }, " Name: ", recipe.name, " "), /*#__PURE__*/React.createElement("h3", {
       className: "ingredientsField"
-    }, " Ingredients: ", recipe.ingredients, " "), /*#__PURE__*/React.createElement("h3", {
+    }, " Ingredients:"), /*#__PURE__*/React.createElement("ul", null, ingList), /*#__PURE__*/React.createElement("h3", {
       className: "directionsField"
-    }, " Directions: ", recipe.directions, " "));
+    }, " Directions:"), /*#__PURE__*/React.createElement("ol", null, dirList));
   });
   return /*#__PURE__*/React.createElement("div", {
     className: "recipeList"
