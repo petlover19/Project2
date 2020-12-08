@@ -262,16 +262,6 @@ textarea {
     font-weight: normal !important;
 }
 
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top: 10px;
-    float: left;
-}
-
 h3.emptyRecipe {
     width: 400px;
     font-size: 1.5em;
