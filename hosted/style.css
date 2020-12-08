@@ -1,6 +1,6 @@
 html,
 body {
-    height: 100%;
+    height: 99.9%;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -26,6 +26,8 @@ body {
     font-size: 3em;
     color: #e1bd2d;
     display: inline;
+    float: center;
+    margin-left: 22%;
 }
 
 nav {
@@ -42,10 +44,10 @@ nav:nth-child(1) {
 .navlink {
     padding: 5px;
     padding-top: 12px;
-    padding-left: 20px;
+    padding-right: 20px;
     color: rgb(66, 66, 66);
     font-size: 1.3em;
-    float: left;
+    float: right;
 }
 
 .navlink a,
@@ -94,8 +96,17 @@ textarea {
     margin: 10px;
 }
 
-#makeRecipe {
+#down {
+    display: flex;
     margin-top: 100px;
+    align-items: flex-start;
+}
+
+#makeRecipe {
+    display: flex;
+    position: sticky;
+    align-self: flex-start;
+    top: 120px;
 }
 
 .makeRecipeSubmit {
@@ -228,7 +239,11 @@ textarea {
 
 .card_list {
     flex-wrap: wrap-reverse;
-    justify-content: space-evenly;
+    justify-content: space-evenly flex-end;
+    display: flex;
+}
+
+#recipes {
     display: flex;
 }
 
@@ -245,35 +260,6 @@ textarea {
 .cards li {
     font-size: 1em;
     font-weight: normal !important;
-}
-
-#recipes {
-    width: 40%;
-    min-width: 400px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    margin: 0 auto;
-    margin-top: 100px;
-}
-
-.recipe {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    background-color: #55acee;
-    padding: 10px;
-    min-height: 60px;
-    overflow: hidden;
-}
-
-.recipe:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255, 255, 255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
 }
 
 img.domoFace {
@@ -311,10 +297,18 @@ h3.ingredientsField {
     font-size: 1.5em;
 }
 
-.recipe:first-child {
+.card_list:first-child {
     margin-top: 10px;
 }
 
-.recipe:last-child {
+.card_list:last-child {
     margin-bottom: 10px;
+}
+
+#ad {
+    background: white;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
 }

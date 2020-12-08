@@ -58,40 +58,50 @@ var RecipeForm = function RecipeForm(props) {
 var RecipeList = function RecipeList(props) {
   if (props.recipes.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
-      className: "recipeList"
+      className: "card_list"
     }, /*#__PURE__*/React.createElement("h3", {
       className: "emptyRecipe"
     }, " No Recipes yet "));
   }
 
-  ;
-  var ingList = props.recipes.ingredients.map(function (ing) {
-    console.log("ing", ing);
-    return /*#__PURE__*/React.createElement("li", null, ing);
-  });
-  var dirList = props.recipes.map(function (recipe) {
-    for (var _dir in recipe) {
-      return /*#__PURE__*/React.createElement("li", null, _dir);
-    }
+  ; // console.log("prop.ing",props.recipes.ingredients)
+  // console.log("prop.recipe",props.recipes)
+  // const ingList=(r) => {
+  //     // const iList=r.map((ing)=>{
+  //     //     return(
+  //     //         <li key={ing}>{ing}</li>
+  //     //     );
+  //     // })
+  //     // return(iList);
+  //     // for(let ing in r){
+  //     //     return(
+  //     //         <li key={ing}>{r[ing]}</li>
+  //     //     );
+  //     // }
+  // };
+  // const dirList=(r) => {
+  //     for(let dir in r){
+  //         for(let d in dir){
+  //             return(
+  //                 <li key={d}>{dir[d]}</li>
+  //             );
+  //         } 
+  //     }
+  // };
 
-    console.log("dir", dir);
-  });
   var recipeNodes = props.recipes.map(function (recipe) {
-    console.log(props.recipes.ingredients);
-    console.log(recipe);
+    // console.log(props.recipes.ingredients)
+    console.log("rec", recipe);
+    console.log("reci", recipe.ingredients);
+    var ingList = recipe.ingredients; // const ingList = this.recipe.ingredients;
+
     return /*#__PURE__*/React.createElement("div", {
       key: recipe._id,
       className: "cards"
-    }, /*#__PURE__*/React.createElement("h2", {
-      className: "nameField"
-    }, " Name: ", recipe.name, " "), /*#__PURE__*/React.createElement("h3", {
-      className: "ingredientsField"
-    }, " Ingredients:"), /*#__PURE__*/React.createElement("ul", null, ingList), /*#__PURE__*/React.createElement("h3", {
-      className: "directionsField"
-    }, " Directions:"), /*#__PURE__*/React.createElement("ol", null, dirList));
+    }, /*#__PURE__*/React.createElement("h2", null, " Name: ", recipe.name, " "), /*#__PURE__*/React.createElement("h3", null, " Ingredients:"), /*#__PURE__*/React.createElement("p", null, recipe.ingredients), /*#__PURE__*/React.createElement("h3", null, " Directions:"), /*#__PURE__*/React.createElement("p", null, recipe.directions));
   });
   return /*#__PURE__*/React.createElement("div", {
-    className: "recipeList"
+    className: "card_list"
   }, " ", recipeNodes, " ");
 };
 
@@ -116,6 +126,14 @@ var setup = function setup(csrf) {
 var getToken = function getToken() {
   sendAjax('GET', '/getToken', null, function (result) {
     setup(result.csrfToken);
+  });
+};
+
+var getBrowseXHR = function getBrowseXHR() {
+  sendAjax('GET', '/browse', null, function (result) {
+    ReactDOM.render( /*#__PURE__*/React.createElement(RecipeList, {
+      recipes: [result.allRecipies]
+    }), document.querySelector("#browseRecipes"));
   });
 };
 

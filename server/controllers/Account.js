@@ -15,6 +15,7 @@ const logout = (req, res) => {
   res.redirect('/');
 };
 
+
 const login = (request, response) => {
   const req = request;
   const res = response;
